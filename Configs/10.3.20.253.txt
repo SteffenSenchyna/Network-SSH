@@ -1,0 +1,280 @@
+Building configuration...
+
+Current configuration : 7625 bytes
+!
+! Last configuration change at 04:49:33 UTC Wed Feb 8 2006 by steffenadmin
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname PLTSW3-1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$YXJc$e/sKNkL5TbMLtYGu/n8eH/
+!
+username admin password 0 cisco
+aaa new-model
+!
+!
+aaa group server radius NPS
+ server name radius1
+!
+aaa authentication login VTY_Authen group NPS local
+aaa authorization exec VTY_Author group NPS local 
+aaa accounting exec default start-stop group NPS
+!
+!
+!
+!
+!
+!
+aaa session-id common
+system mtu routing 1500
+!
+!
+!
+!
+!
+!
+!
+ip domain-name H2OTOWERSYSTEMS.local
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-332759936
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-332759936
+ revocation-check none
+ rsakeypair TP-self-signed-332759936
+!
+!
+crypto pki certificate chain TP-self-signed-332759936
+ certificate self-signed 01
+  30820229 30820192 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 33333237 35393933 36301E17 0D303630 31303230 31323334 
+  395A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3333 32373539 
+  39333630 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  A1618E65 734157E5 E21FB2C9 9869EF16 2F66B0C1 71F423DA C3074CD7 806E52D0 
+  DC1D5FD0 8B1787BA 152DED97 A07062D5 59C9F1BD 05CC0992 B5F74267 F49E398D 
+  7E23AFEA B3A29CAD 896858A0 47B374CA 8C1C77A5 2AA99488 EE8BFB15 C3728C40 
+  61403D18 78F8F657 4F21CF71 F089A5AC FCE2D96D 3C25DEC1 54922068 08CE0B75 
+  02030100 01A35330 51300F06 03551D13 0101FF04 05300301 01FF301F 0603551D 
+  23041830 168014C4 DFD599D8 8251141B 65763706 EB3A8D8E 20076330 1D060355 
+  1D0E0416 0414C4DF D599D882 51141B65 763706EB 3A8D8E20 0763300D 06092A86 
+  4886F70D 01010505 00038181 001D810A 4A6FD044 0D493D88 C4C9BC74 E413A1DB 
+  7CAD723E C7E3468C 23A3AE43 FBAA9212 9E6C5DB4 86D31423 0609E88F 7DED9846 
+  EB925801 C4BD0554 00259F0F 25BDEC41 B7172000 8FA4AC12 9837D02D 55E8D17B 
+  CA331860 5AAD2089 D3DBFB30 8D092879 ACC65808 8B22A8EA 33E342BF ECDF1D2F 
+  839C9584 64AB4276 6B4FDF9A 8F
+  	quit
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0
+ no ip address
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+ description Uplink to PLTSW2-1
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 777
+ switchport mode trunk
+!
+interface GigabitEthernet0/3
+ description Uplink to PLTRTR
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 777
+ switchport mode trunk
+!
+interface GigabitEthernet0/4
+!
+interface GigabitEthernet0/5
+!
+interface GigabitEthernet0/6
+!
+interface GigabitEthernet0/7
+!
+interface GigabitEthernet0/8
+!
+interface GigabitEthernet0/9
+!
+interface GigabitEthernet0/10
+!
+interface GigabitEthernet0/11
+!
+interface GigabitEthernet0/12
+!
+interface GigabitEthernet0/13
+!
+interface GigabitEthernet0/14
+!
+interface GigabitEthernet0/15
+!
+interface GigabitEthernet0/16
+!
+interface GigabitEthernet0/17
+!
+interface GigabitEthernet0/18
+!
+interface GigabitEthernet0/19
+!
+interface GigabitEthernet0/20
+!
+interface GigabitEthernet0/21
+!
+interface GigabitEthernet0/22
+!
+interface GigabitEthernet0/23
+ description To Fortigate Guest Port
+ switchport access vlan 14
+ switchport mode access
+!
+interface GigabitEthernet0/24
+ description To Fortigate 100D Mgmt
+ switchport access vlan 20
+ switchport mode access
+!
+interface GigabitEthernet1/1
+!
+interface GigabitEthernet1/2
+!
+interface GigabitEthernet1/3
+!
+interface GigabitEthernet1/4
+!
+interface TenGigabitEthernet1/1
+!
+interface TenGigabitEthernet1/2
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan14
+ ip address 10.3.14.253 255.255.255.0
+!
+interface Vlan20
+ ip address 10.3.20.253 255.255.255.0
+!
+ip default-gateway 10.3.20.254
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+!
+!
+logging host 10.1.20.160
+access-list 20 permit 10.1.20.0 0.0.0.255
+access-list 20 permit 10.2.20.0 0.0.0.255
+access-list 20 permit 10.3.20.0 0.0.0.255
+access-list 20 deny   any
+!
+!
+!
+!
+radius server radius1
+ address ipv4 10.0.10.15 auth-port 1645 acct-port 1646
+ key cisco
+!
+banner exec ^C
+777777777777777+==77 77 777777777777777777777777777777777777
+777777777777777++:=I77777777777777777777777 ====:77777777777
+777777777777777++===77777777777777777777777++===:~7777777777
+7  777777777777+=::==777777777777777777777+=====::7777777777
+777777777777777+=~:~==777777777777777777++======~:7777777777
+77777777777777?+==:::===7777?7777777777+=========::777777777
+77777777777777+==+++====================~=========:777777777
+7777777777777==++++++======================::~:==::777777777
+7  777777777+++++++++================:======:::==:~777777777
+777777777+++++++++++======================~:::=+=:7777777777
+777777?+++++++++++++=====================~:::===::7777777777
+77777?++++++++==++=======++++=============~=======I777777777
+7777I++++++=,===+======+++++++=====================777777777
+7777++I7I?~I=..========++++++=======================77777777
+7777+I77I?I....++======++++=::======================I7777777
+7 7II77I?+~I.:?====??====:.I7...=====================7777777
+777I777I++++??=+?????==:..?......==77I7I==+77?=======7777777
+77I7777I?+I?????????====,:+I..~===+77777777777?======7777777
+77I77777I???????????+??==========77777777777777======7777777
+7II777I~~~~~~.?????????+======77777777777777777I=====+777777
+7IIII7..........7III????77777777777777777777777+====== 77777
+7III7?7~.......+777III?+77777777777777777777777========77777
+I?II7I?.....:.+I7777II??777777777777777777777777=======77777
+IIIII?==,...+==77I77????I7II77777777777I????????=======77777
+III?II=+~:~::+++++7?+???I7777777777???????????==========7777
+7IIIIII=...==+==???????????I??77??????????????=========+I777
+7IIIII?+::::,..=??????=~=?????????????????????=========??777
+7IIIIII?+==:::::::.::~+??????????????????????===========+I77
+77IIIIII?????????????????????????????????????===========+?77
+77I?II?????????????????????????????????????=============?? 7
+7 7+??????????????????????????????????????+====+=======???77
+777?++????????????????????????????????????=?===========????7
+777??+=+?????????????????????????I????????+===========?????7
+77???++==+?????????????????????=???????????+=======??????=77
+
+Much Network Many Login So WOW
+^C
+banner motd ^Codt #
+    __    _             _     __   _____                               
+   / /   (_____ ___  __(_____/ /  / ___/__  ______                     
+  / /   / / __ `/ / / / / __  /   \__ \/ / / / __ \                    
+ / /___/ / /_/ / /_/ / / /_/ /   ___/ / /_/ / / / /                    
+/_____/_____, /\__,___/\__,_/   /__________/_/ /_/                     
+   / / / __/_______/ _________     / ________ __________ ___  _____    
+  / /_/ / / / / __  / ___/ __ \   / /_  / __ `/ ___/ __ `__ \/ ___/    
+ / __  / /_/ / /_/ / /  / /_/ /  / __/ / /_/ / /  / / / / / (__  )     
+/_/ /_/\__, /\__,_/_/   \____/  /_/    \__,_/_/  /_/ /_/ /_/____/      
+      /____/                                                           
+^C
+!
+line con 0
+ logging synchronous
+line vty 0 4
+ access-class 20 in
+ authorization exec VTY_Author
+ login authentication VTY_Authen
+ transport input ssh
+line vty 5 15
+ access-class 20 in
+ authorization exec VTY_Author
+ login authentication VTY_Authen
+ transport input ssh
+!
+!
+end

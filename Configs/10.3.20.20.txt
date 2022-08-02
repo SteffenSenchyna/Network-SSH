@@ -1,0 +1,346 @@
+Building configuration...
+
+Current configuration : 9921 bytes
+!
+! Last configuration change at 04:51:19 UTC Wed Apr 7 1993 by steffenadmin
+!
+version 15.0
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname PLNTSW2-1
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$yfo2$glGFPcGlPnynXvWa0w2yv.
+!
+username admin password 0 cisco
+aaa new-model
+!
+!
+aaa group server radius NPS
+ server 10.0.10.15
+!
+aaa authentication login VTY_Authen group NPS local
+aaa authorization exec VTY_Author group NPS local 
+aaa accounting exec default start-stop group NPS
+!
+!
+!
+!
+!
+!
+aaa session-id common
+system mtu routing 1500
+!
+!
+ip domain-name H2OTOWERSYSTEMS.local
+!
+!
+crypto pki trustpoint TP-self-signed-1798543872
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1798543872
+ revocation-check none
+ rsakeypair TP-self-signed-1798543872
+!
+!
+crypto pki certificate chain TP-self-signed-1798543872
+ certificate self-signed 01
+  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 31373938 35343338 3732301E 170D3933 30333031 30303031 
+  32335A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 37393835 
+  34333837 3230819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281 
+  8100ADB4 3989D68B B40CFE8C 1E01228B 670B238A 9CCED382 825FEAE1 A1FACFA3 
+  EC41337E 8D3FFAEA 0746D78B 92330453 6741D505 65C82EA2 F64841FB 4950FF6F 
+  702CCBB2 00D3ED98 74186A12 B2C198FA 7A1439EF 2E905AAB 18D5013E F9B5D294 
+  7E588797 5C84261C 4A9C2BEF 68CA41EE 1404B9BE 6B79C881 7B5DB87E 53CEF500 
+  9A250203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603 
+  551D2304 18301680 14095043 39B92F90 DA430609 78A9D0B2 57364C3A 1E301D06 
+  03551D0E 04160414 09504339 B92F90DA 43060978 A9D0B257 364C3A1E 300D0609 
+  2A864886 F70D0101 05050003 8181008E 84A05C0A CD0CA599 F1CE9FE5 A7896652 
+  3B39E0B5 536B8D13 95C45951 5424CBBE 774D6798 D5AB3D95 2E6DA8AE 9E32E0C4 
+  4D5B5530 FB6250D5 F08344F7 E39AC436 D53007C6 646848F2 71D17CC8 16C77CEB 
+  2A6C6E56 75126B8C BF90939F 4C135F48 B491E2BD 20126CF2 4DBD555C 719EC6A6 
+  DD3AA497 2F89B037 80C7382D F9D792
+  	quit
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/1
+ description Management
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security maximum 10
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 000c.29a8.d572
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ description Clients 
+ switchport access vlan 26
+ switchport mode access
+ switchport voice vlan 35
+ switchport port-security maximum 10
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 000c.2929.82ef
+ switchport port-security mac-address sticky 000c.292b.fdc9
+ switchport port-security mac-address sticky 000c.296d.ce6b
+ switchport port-security mac-address sticky 000c.299c.8449
+ switchport port-security mac-address sticky 000c.29a8.f3b9
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ description Management
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security maximum 10
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 000c.299e.2e45
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+ description Clients 
+ switchport access vlan 26
+ switchport mode access
+ switchport voice vlan 35
+ switchport port-security maximum 5
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 000c.294b.42c7
+ switchport port-security mac-address sticky 0017.9534.8341 vlan voice
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/6
+ description Management
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security maximum 5
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface FastEthernet0/25
+!
+interface FastEthernet0/26
+!
+interface FastEthernet0/27
+!
+interface FastEthernet0/28
+!
+interface FastEthernet0/29
+!
+interface FastEthernet0/30
+!
+interface FastEthernet0/31
+!
+interface FastEthernet0/32
+!
+interface FastEthernet0/33
+!
+interface FastEthernet0/34
+!
+interface FastEthernet0/35
+!
+interface FastEthernet0/36
+!
+interface FastEthernet0/37
+!
+interface FastEthernet0/38
+!
+interface FastEthernet0/39
+!
+interface FastEthernet0/40
+!
+interface FastEthernet0/41
+!
+interface FastEthernet0/42
+!
+interface FastEthernet0/43
+!
+interface FastEthernet0/44
+!
+interface FastEthernet0/45
+!
+interface FastEthernet0/46
+!
+interface FastEthernet0/47
+!
+interface FastEthernet0/48
+ description Connected to PLNTWireless AP
+ switchport trunk native vlan 20
+ switchport trunk allowed vlan 13,14,20
+ switchport mode trunk
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface GigabitEthernet0/3
+ description Connection to PLNTSW3-1
+ switchport trunk native vlan 777
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport mode trunk
+!
+interface GigabitEthernet0/4
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan13
+ no ip address
+!
+interface Vlan14
+ no ip address
+!
+interface Vlan20
+ description Management 
+ ip address 10.3.20.20 255.255.255.0
+!
+ip default-gateway 10.3.20.254
+ip http server
+ip http secure-server
+!
+ip access-list extended WirelessGuest
+ permit udp 10.3.14.0 0.0.0.255 host 10.0.10.1 eq bootps bootpc
+logging host 10.1.20.160
+access-list 20 permit 10.1.20.0 0.0.0.255
+access-list 20 permit 10.2.20.0 0.0.0.255
+access-list 20 permit 10.3.20.0 0.0.0.255
+access-list 20 deny   any
+radius-server host 10.0.10.15 key cisco
+!
+!
+!
+banner exec ^C
+777777777777777+==77 77 777777777777777777777777777777777777
+777777777777777++:=I77777777777777777777777 ====:77777777777
+777777777777777++===77777777777777777777777++===:~7777777777
+7  777777777777+=::==777777777777777777777+=====::7777777777
+777777777777777+=~:~==777777777777777777++======~:7777777777
+77777777777777?+==:::===7777?7777777777+=========::777777777
+77777777777777+==+++====================~=========:777777777
+7777777777777==++++++======================::~:==::777777777
+7  777777777+++++++++================:======:::==:~777777777
+777777777+++++++++++======================~:::=+=:7777777777
+777777?+++++++++++++=====================~:::===::7777777777
+77777?++++++++==++=======++++=============~=======I777777777
+7777I++++++=,===+======+++++++=====================777777777
+7777++I7I?~I=..========++++++=======================77777777
+7777+I77I?I....++======++++=::======================I7777777
+7 7II77I?+~I.:?====??====:.I7...=====================7777777
+777I777I++++??=+?????==:..?......==77I7I==+77?=======7777777
+77I7777I?+I?????????====,:+I..~===+77777777777?======7777777
+77I77777I???????????+??==========77777777777777======7777777
+7II777I~~~~~~.?????????+======77777777777777777I=====+777777
+7IIII7..........7III????77777777777777777777777+====== 77777
+7III7?7~.......+777III?+77777777777777777777777========77777
+I?II7I?.....:.+I7777II??777777777777777777777777=======77777
+IIIII?==,...+==77I77????I7II77777777777I????????=======77777
+III?II=+~:~::+++++7?+???I7777777777???????????==========7777
+7IIIIII=...==+==???????????I??77??????????????=========+I777
+7IIIII?+::::,..=??????=~=?????????????????????=========??777
+7IIIIII?+==:::::::.::~+??????????????????????===========+I77
+77IIIIII?????????????????????????????????????===========+?77
+77I?II?????????????????????????????????????=============?? 7
+7 7+??????????????????????????????????????+====+=======???77
+777?++????????????????????????????????????=?===========????7
+777??+=+?????????????????????????I????????+===========?????7
+77???++==+?????????????????????=???????????+=======??????=77
+
+Much Network Many Login So WOW
+^C
+banner motd ^Codt #
+    __    _             _     __   _____                               
+   / /   (_____ ___  __(_____/ /  / ___/__  ______                     
+  / /   / / __ `/ / / / / __  /   \__ \/ / / / __ \                    
+ / /___/ / /_/ / /_/ / / /_/ /   ___/ / /_/ / / / /                    
+/_____/_____, /\__,___/\__,_/   /__________/_/ /_/                     
+   / / / __/_______/ _________     / ________ __________ ___  _____    
+  / /_/ / / / / __  / ___/ __ \   / /_  / __ `/ ___/ __ `__ \/ ___/    
+ / __  / /_/ / /_/ / /  / /_/ /  / __/ / /_/ / /  / / / / / (__  )     
+/_/ /_/\__, /\__,_/_/   \____/  /_/    \__,_/_/  /_/ /_/ /_/____/      
+      /____/                                                           
+^C
+!
+line con 0
+ logging synchronous
+line vty 0 4
+ access-class 20 in
+ authorization exec VTY_Author
+ login authentication VTY_Authen
+ transport input ssh
+line vty 5 15
+ access-class 20 in
+ authorization exec VTY_Author
+ login authentication VTY_Authen
+ transport input ssh
+!
+end

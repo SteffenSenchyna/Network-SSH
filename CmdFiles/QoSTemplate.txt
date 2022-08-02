@@ -1,0 +1,23 @@
+class-map match-any VoIP
+match vlan 25,35
+
+class-map match-any FTP
+match protocol ftp
+
+policy-map QoS
+class VoIP
+priority percent 50
+class FTP
+bandwidth percent 20 
+class class-default 
+bandwidth percent 30 
+
+
+
+
+
+
+
+
+
+

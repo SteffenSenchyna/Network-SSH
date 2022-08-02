@@ -1,0 +1,361 @@
+Building configuration...
+
+Current configuration : 9731 bytes
+!
+! Last configuration change at 04:54:27 UTC Wed Feb 8 2006 by steffenadmin
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname HQSW3-1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$T0mw$OzeWUmHjbMHAnT2Zn83Nv1
+!
+username admin password 0 cisco
+aaa new-model
+!
+!
+aaa group server radius NPS
+ server name radius1
+!
+aaa authentication login VTY_Authen group NPS local
+aaa authorization exec VTY_Author group NPS local 
+aaa accounting exec default start-stop group NPS
+!
+!
+!
+!
+!
+!
+aaa session-id common
+system mtu routing 1500
+!
+!
+!
+!
+ip routing
+!
+!
+!
+ip domain-name H2OTOWERSYSTEMS.local
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-332756608
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-332756608
+ revocation-check none
+ rsakeypair TP-self-signed-332756608
+!
+!
+crypto pki certificate chain TP-self-signed-332756608
+ certificate self-signed 01
+  30820229 30820192 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 33333237 35363630 38301E17 0D303630 31303230 31313234 
+  315A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3333 32373536 
+  36303830 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  8E2327A2 ABE1A00A 2216B46B 06350080 E6D7E340 A95158BB F9F86FDE ED9701DF 
+  472B01F5 54AA4D29 CFB9CCF0 B1DB672A 34E43E07 B3F79F88 CBDFC820 DA5CEC53 
+  657AC31F 15B4A4AD 41EA43A9 25CF005C C19F8A53 ADC284D0 4C0D0010 1B296A93 
+  C270D1A6 A88CE1D0 A5F75504 8E4B1D0B 6205A978 4CF801E3 8E624ACC 8B11D62D 
+  02030100 01A35330 51300F06 03551D13 0101FF04 05300301 01FF301F 0603551D 
+  23041830 1680144D 39A9707E 0B03DBD4 DCBCD1A0 0390E735 DE3EB030 1D060355 
+  1D0E0416 04144D39 A9707E0B 03DBD4DC BCD1A003 90E735DE 3EB0300D 06092A86 
+  4886F70D 01010505 00038181 005CB38F F4BE5C56 C197A877 793C0C39 507146EC 
+  F40BA53A FD3AE83C 38282D5E 44C3F97F 02930D83 4AE32AB1 D4BB5124 BF4B62B8 
+  F2EA187B FCDA5740 F6D1D5B8 7B8FA6F5 93A98B83 25A292F4 A2D32470 C86D9F45 
+  7226E44F F3429E5C D580DEF5 E03EA153 7FD890E6 9321F980 73626B19 E00A7EC5 
+  74E18EFF 27604592 1CE64CF8 B7
+  	quit
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+class-map match-any VoIP
+ match access-group 50
+class-map match-any FTP
+!
+policy-map QoS
+ class VoIP
+  set ip precedence 5
+ class FTP
+ class class-default
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 777
+ switchport mode trunk
+ port-channel min-links 2
+!
+interface FastEthernet0
+ no ip address
+ no ip route-cache
+!
+interface GigabitEthernet0/1
+ description Uplink to HQSW2-1
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 777
+ switchport mode trunk
+ service-policy input QoS
+!
+interface GigabitEthernet0/2
+ description Uplink to HQRTR
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 777
+ switchport mode trunk
+ service-policy input QoS
+!
+interface GigabitEthernet0/3
+ description To EDM-CME
+ switchport trunk allowed vlan 20,24,25
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 20
+ switchport mode trunk
+!
+interface GigabitEthernet0/4
+!
+interface GigabitEthernet0/5
+!
+interface GigabitEthernet0/6
+!
+interface GigabitEthernet0/7
+!
+interface GigabitEthernet0/8
+!
+interface GigabitEthernet0/9
+ description Interface for NETW2300 Lab
+ switchport access vlan 20
+ switchport mode access
+!
+interface GigabitEthernet0/10
+!
+interface GigabitEthernet0/11
+!
+interface GigabitEthernet0/12
+!
+interface GigabitEthernet0/13
+!
+interface GigabitEthernet0/14
+!
+interface GigabitEthernet0/15
+!
+interface GigabitEthernet0/16
+!
+interface GigabitEthernet0/17
+!
+interface GigabitEthernet0/18
+!
+interface GigabitEthernet0/19
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 777
+ switchport mode trunk
+ channel-group 1 mode active
+ service-policy input QoS
+!
+interface GigabitEthernet0/20
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 777
+ switchport mode trunk
+ channel-group 1 mode active
+ service-policy input QoS
+!
+interface GigabitEthernet0/21
+ switchport trunk allowed vlan 10,13,14,20,22,24-27,35
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 777
+ switchport mode trunk
+ channel-group 1 mode active
+ service-policy input QoS
+!
+interface GigabitEthernet0/22
+!
+interface GigabitEthernet0/23
+!
+interface GigabitEthernet0/24
+ description Connection to Fortigate
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet1/1
+!
+interface GigabitEthernet1/2
+!
+interface GigabitEthernet1/3
+!
+interface GigabitEthernet1/4
+!
+interface TenGigabitEthernet1/1
+!
+interface TenGigabitEthernet1/2
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan13
+ description CorpWireless
+ ip address 10.0.13.253 255.255.255.0
+ ip helper-address 10.0.10.1 
+!
+interface Vlan14
+ description GuestWireless
+ ip address 10.0.14.253 255.255.255.0
+ ip helper-address 10.0.10.1 
+!
+interface Vlan20
+ ip address 10.1.20.253 255.255.255.0
+ ip helper-address 10.0.10.1 
+!
+interface Vlan22
+ ip address 10.2.20.253 255.255.255.0
+!
+interface Vlan24
+ description Clients
+ ip address 10.24.255.253 255.255.0.0
+ ip helper-address 10.0.10.1 
+!
+interface Vlan25
+ description Voice
+ ip address 10.25.255.253 255.255.0.0
+ ip helper-address 10.0.10.1 
+!
+interface Vlan100
+ description Testing
+ no ip address
+!
+ip default-gateway 10.1.20.254
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip route 0.0.0.0 0.0.0.0 10.1.20.254
+!
+!
+logging source-interface Vlan20
+logging host 10.0.10.7
+logging host 10.1.20.160
+access-list 20 permit 10.1.20.0 0.0.0.255
+access-list 20 permit 10.2.20.0 0.0.0.255
+access-list 20 permit 10.3.20.0 0.0.0.255
+access-list 20 deny   any
+access-list 50 permit 10.25.0.0 0.0.255.255
+access-list 50 permit 10.45.0.0 0.0.255.255
+!
+!
+snmp-server community NETRO RO
+snmp-server community NETRW RW
+snmp-server location WB-216-05
+snmp-server contact Steffen
+!
+!
+radius server radius1
+ address ipv4 10.0.10.15 auth-port 1645 acct-port 1646
+ key cisco
+!
+banner exec ^C
+777777777777777+==77 77 777777777777777777777777777777777777
+777777777777777++:=I77777777777777777777777 ====:77777777777
+777777777777777++===77777777777777777777777++===:~7777777777
+7  777777777777+=::==777777777777777777777+=====::7777777777
+777777777777777+=~:~==777777777777777777++======~:7777777777
+77777777777777?+==:::===7777?7777777777+=========::777777777
+77777777777777+==+++====================~=========:777777777
+7777777777777==++++++======================::~:==::777777777
+7  777777777+++++++++================:======:::==:~777777777
+777777777+++++++++++======================~:::=+=:7777777777
+777777?+++++++++++++=====================~:::===::7777777777
+77777?++++++++==++=======++++=============~=======I777777777
+7777I++++++=,===+======+++++++=====================777777777
+7777++I7I?~I=..========++++++=======================77777777
+7777+I77I?I....++======++++=::======================I7777777
+7 7II77I?+~I.:?====??====:.I7...=====================7777777
+777I777I++++??=+?????==:..?......==77I7I==+77?=======7777777
+77I7777I?+I?????????====,:+I..~===+77777777777?======7777777
+77I77777I???????????+??==========77777777777777======7777777
+7II777I~~~~~~.?????????+======77777777777777777I=====+777777
+7IIII7..........7III????77777777777777777777777+====== 77777
+7III7?7~.......+777III?+77777777777777777777777========77777
+I?II7I?.....:.+I7777II??777777777777777777777777=======77777
+IIIII?==,...+==77I77????I7II77777777777I????????=======77777
+III?II=+~:~::+++++7?+???I7777777777???????????==========7777
+7IIIIII=...==+==???????????I??77??????????????=========+I777
+7IIIII?+::::,..=??????=~=?????????????????????=========??777
+7IIIIII?+==:::::::.::~+??????????????????????===========+I77
+77IIIIII?????????????????????????????????????===========+?77
+77I?II?????????????????????????????????????=============?? 7
+7 7+??????????????????????????????????????+====+=======???77
+777?++????????????????????????????????????=?===========????7
+777??+=+?????????????????????????I????????+===========?????7
+77???++==+?????????????????????=???????????+=======??????=77
+
+Much Network Many Login So WOW
+^C
+banner motd ^Codt #
+    __    _             _     __   _____                               
+   / /   (_____ ___  __(_____/ /  / ___/__  ______                     
+  / /   / / __ `/ / / / / __  /   \__ \/ / / / __ \                    
+ / /___/ / /_/ / /_/ / / /_/ /   ___/ / /_/ / / / /                    
+/_____/_____, /\__,___/\__,_/   /__________/_/ /_/                     
+   / / / __/_______/ _________     / ________ __________ ___  _____    
+  / /_/ / / / / __  / ___/ __ \   / /_  / __ `/ ___/ __ `__ \/ ___/    
+ / __  / /_/ / /_/ / /  / /_/ /  / __/ / /_/ / /  / / / / / (__  )     
+/_/ /_/\__, /\__,_/_/   \____/  /_/    \__,_/_/  /_/ /_/ /_/____/      
+      /____/                                                           
+^C
+!
+line con 0
+ logging synchronous
+line vty 0 4
+ access-class 20 in
+ authorization exec VTY_Author
+ login authentication VTY_Authen
+ transport input ssh
+line vty 5 15
+ access-class 20 in
+ authorization exec VTY_Author
+ login authentication VTY_Authen
+ transport input ssh
+!
+!
+end

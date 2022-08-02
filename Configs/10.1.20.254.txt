@@ -1,0 +1,281 @@
+Building configuration...
+
+
+Current configuration : 6952 bytes
+!
+! Last configuration change at 16:53:37 UTC Wed Feb 8 2006 by steffenadmin
+! NVRAM config last updated at 09:42:54 UTC Wed Feb 8 2006 by steffenadmin
+! NVRAM config last updated at 09:42:54 UTC Wed Feb 8 2006 by steffenadmin
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname HQRTR
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+!
+aaa new-model
+!
+!
+aaa group server radius NPS
+ server name radius1
+!
+aaa authentication login VTY_Authen group NPS local
+aaa authorization exec VTY_Author group NPS local 
+aaa accounting exec default start-stop group NPS
+!
+!
+!
+!
+!
+aaa session-id common
+!
+memory-size iomem 5
+!
+dot11 syslog
+ip source-route
+!
+!
+ip cef
+!
+!
+!
+ip domain name H2OTOWERSYSTEMS.local
+ipv6 unicast-routing
+ipv6 cef
+ipv6 dhcp pool DNS-SERVER-LIST
+ address prefix 2600:FC:0:D403:4444::/80
+ dns-server 2001:4860:4860::8888
+ domain-name rack#03.com
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+voice-card 0
+!
+crypto pki token default removal timeout 0
+!
+!
+!
+!
+license udi pid CISCO2811 sn FHK1103F299
+username admin password 0 cisco
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+ ipv6 address FE80::1 link-local
+ ipv6 address 2600:FC:0:D403::1/64
+ ipv6 enable
+ ipv6 nd managed-config-flag
+ ipv6 dhcp server DNS-SERVER-LIST
+!
+interface FastEthernet0/0.10
+ description Server LAN
+ encapsulation dot1Q 10
+ ip address 10.0.10.254 255.255.255.0
+ ip helper-address 10.0.10.1
+!
+interface FastEthernet0/0.13
+ description Corp Wireless
+ encapsulation dot1Q 13
+ ip address 10.13.255.254 255.255.0.0
+ ip helper-address 10.0.10.1
+!
+interface FastEthernet0/0.14
+ description Guest Wireless
+ encapsulation dot1Q 14
+ ip address 10.14.255.254 255.255.0.0
+ ip helper-address 10.0.10.1
+!
+interface FastEthernet0/0.20
+ description Management 
+ encapsulation dot1Q 20
+ ip address 10.1.20.254 255.255.255.0
+ ip helper-address 10.0.10.1
+!
+interface FastEthernet0/0.22
+ description WH Management
+ encapsulation dot1Q 22
+ ip address 10.2.20.254 255.255.255.0
+ ip helper-address 10.0.10.1
+!
+interface FastEthernet0/0.24
+ description HQClients
+ encapsulation dot1Q 24
+ ip address 10.24.255.254 255.255.0.0
+ ip helper-address 10.0.10.1
+!
+interface FastEthernet0/0.25
+ description Voice
+ encapsulation dot1Q 25
+ ip address 10.25.255.254 255.255.0.0
+ ip helper-address 10.0.10.1
+!
+interface FastEthernet0/0.27
+ description WHClients
+ encapsulation dot1Q 27
+ ip address 10.27.255.254 255.255.0.0
+ ip helper-address 10.0.10.1
+ ip helper-address 10.0.10.8
+!
+interface FastEthernet0/0.45
+ description WHVoIP
+ encapsulation dot1Q 45
+ ip address 10.45.255.254 255.255.0.0
+ ip helper-address 10.0.10.1
+!
+interface FastEthernet0/1
+ description Internet Connection 
+ ip address 10.0.12.254 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ no ip address
+ shutdown
+ no fair-queue
+ clock rate 2000000
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+ip route 0.0.0.0 0.0.0.0 10.0.12.50
+ip route 10.2.20.0 255.255.255.0 10.1.20.253
+ip route 10.5.20.0 255.255.255.0 10.1.20.253
+!
+logging source-interface FastEthernet0/0.20
+logging 10.0.10.7
+logging 10.1.20.160
+access-list 20 permit 10.1.20.0 0.0.0.255
+access-list 20 permit 10.2.20.0 0.0.0.255
+access-list 20 permit 10.3.20.0 0.0.0.255
+access-list 20 deny   any
+!
+!
+!
+!
+snmp-server community NETRO RO
+snmp-server community NETRW RW
+snmp-server location WB216-05
+snmp-server contact NET-Student
+!
+!
+!
+radius server radius1
+ address ipv4 10.0.10.15 auth-port 1645 acct-port 1646
+ key cisco
+!
+!
+control-plane
+!
+!
+!
+!
+mgcp profile default
+!
+!
+!
+!
+!
+banner exec ^C
+777777777777777+==77 77 777777777777777777777777777777777777
+777777777777777++:=I77777777777777777777777 ====:77777777777
+777777777777777++===77777777777777777777777++===:~7777777777
+7  777777777777+=::==777777777777777777777+=====::7777777777
+777777777777777+=~:~==777777777777777777++======~:7777777777
+77777777777777?+==:::===7777?7777777777+=========::777777777
+77777777777777+==+++====================~=========:777777777
+7777777777777==++++++======================::~:==::777777777
+7  777777777+++++++++================:======:::==:~777777777
+777777777+++++++++++======================~:::=+=:7777777777
+777777?+++++++++++++=====================~:::===::7777777777
+77777?++++++++==++=======++++=============~=======I777777777
+7777I++++++=,===+======+++++++=====================777777777
+7777++I7I?~I=..========++++++=======================77777777
+7777+I77I?I....++======++++=::======================I7777777
+7 7II77I?+~I.:?====??====:.I7...=====================7777777
+777I777I++++??=+?????==:..?......==77I7I==+77?=======7777777
+77I7777I?+I?????????====,:+I..~===+77777777777?======7777777
+77I77777I???????????+??==========77777777777777======7777777
+7II777I~~~~~~.?????????+======77777777777777777I=====+777777
+7IIII7..........7III????77777777777777777777777+====== 77777
+7III7?7~.......+777III?+77777777777777777777777========77777
+I?II7I?.....:.+I7777II??777777777777777777777777=======77777
+IIIII?==,...+==77I77????I7II77777777777I????????=======77777
+III?II=+~:~::+++++7?+???I7777777777???????????==========7777
+7IIIIII=...==+==???????????I??77??????????????=========+I777
+7IIIII?+::::,..=??????=~=?????????????????????=========??777
+7IIIIII?+==:::::::.::~+??????????????????????===========+I77
+77IIIIII?????????????????????????????????????===========+?77
+77I?II?????????????????????????????????????=============?? 7
+7 7+??????????????????????????????????????+====+=======???77
+777?++????????????????????????????????????=?===========????7
+777??+=+?????????????????????????I????????+===========?????7
+77???++==+?????????????????????=???????????+=======??????=77
+
+Much Network Many Login So WOW
+^C
+banner motd ^Codt #
+    __    _             _     __   _____                               
+   / /   (_____ ___  __(_____/ /  / ___/__  ______                     
+  / /   / / __ `/ / / / / __  /   \__ \/ / / / __ \                    
+ / /___/ / /_/ / /_/ / / /_/ /   ___/ / /_/ / / / /                    
+/_____/_____, /\__,___/\__,_/   /__________/_/ /_/                     
+   / / / __/_______/ _________     / ________ __________ ___  _____    
+  / /_/ / / / / __  / ___/ __ \   / /_  / __ `/ ___/ __ `__ \/ ___/    
+ / __  / /_/ / /_/ / /  / /_/ /  / __/ / /_/ / /  / / / / / (__  )     
+/_/ /_/\__, /\__,_/_/   \____/  /_/    \__,_/_/  /_/ /_/ /_/____/      
+      /____/                                                           
+^C
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ access-class 20 in
+ authorization exec VTY_Author
+ login authentication VTY_Authen
+ transport input ssh
+line vty 5 15
+ access-class 20 in
+ authorization exec VTY_Author
+ login authentication VTY_Authen
+ transport input ssh
+!
+scheduler allocate 20000 1000
+end
