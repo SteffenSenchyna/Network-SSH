@@ -14,6 +14,7 @@ from netmiko import ConnectHandler
 class Window(QWidget):
     def __init__(self):
         super().__init__()
+        #Initializing Variables
         self.username = 'None'
         self.password = ''
         self.filepath_cmd = "None"
@@ -57,6 +58,7 @@ class Window(QWidget):
         """Network Back Up page UI."""
         NetMonTab = QWidget()
         layout = QVBoxLayout()
+        #Creating buttons and attaching functions to button presses
         bScan = QPushButton('Scan Network')
         bScan.clicked.connect(self.on_click_get_file_path_ip)
         bLoad = QPushButton('Load a IP file')
@@ -65,6 +67,7 @@ class Window(QWidget):
         bDeploy.clicked.connect(self.saveConfig)
         bErase = QPushButton("Erase")
         bErase.clicked.connect(self.eraseConfig)
+        #Attaching buttons to GUI
         layout.addWidget(bScan)
         layout.addWidget(bLoad)
         layout.addWidget(bDeploy)
@@ -163,14 +166,13 @@ class Window(QWidget):
             dlg.setWindowTitle("Error")
             dlg.setText("Please load a IP file")
             dlg.exec()
-        #If no error the promts user for login credentials for network devices
+        #If no error promts user for login credentials for network devices
         else:
+            #Prompts user for network login credentials credentials
             self.username, done1 = QInputDialog.getText(
                 self, 'Input Dialog', 'Enter Username:')
-
             self.password, done2 = QInputDialog.getText(
                 self, 'Input Dialog', 'Enter Password:', QLineEdit.Password)
-            
             self.secret, done3 = QInputDialog.getText(
                 self, 'Input Dialog', 'Enter Secret:', QLineEdit.Password)
                 
@@ -181,6 +183,7 @@ class Window(QWidget):
                 dlg.exec()
             
             else:
+                #Takes user inputs and sets up netmiko devcie configs
                 device = {
                     'device_type': 'cisco_ios',
                     'host': 'ip',
@@ -191,79 +194,84 @@ class Window(QWidget):
                 #Loading IP file JSON and converting to python dictionary 
                 ipfile = open(self.filepath_ip)
                 ipJSON = json.load(ipfile)
-                #Iterating over the dictionary and grabbing the IPS and then deploying the write erase command
-                
-                
-                for i in ipJSON:
-                    device['host'] = ipJSON[i].strip("\n")
-                    print("Connecting to ", ipJSON[i])
-                    net_connect = ConnectHandler(**device)
-                    loop = QEventLoop()
-                    QTimer.singleShot(2000, loop.quit)
-                    net_connect.enable()
-                    outp = net_connect.send_command('show run')
-                    print(ipJSON[i].strip("\n"), " configuration has been saved")
-                    with open(f"{self.directoryConfig}\\" + ipJSON[i].strip("\n") + '.txt', 'w') as f:
-                        f.write(outp)
-                    print("Disconnecting")
-                    net_connect.disconnect()
-                print('Devices have been backed up')
+                #Iterating over the dictionary and grabbing the IPS and then deploying the show run command
+                #The output is then saved and written to a .txt file 
+                try:
+                    for i in ipJSON:
+                        device['host'] = ipJSON[i].strip("\n")
+                        print("Connecting to ", ipJSON[i])
+                        net_connect = ConnectHandler(**device)
+                        #The QEvent loop is needed to prevent a hanging SSH call which will crash the GUI
+                        loop = QEventLoop()
+                        QTimer.singleShot(2000, loop.quit)
+                        net_connect.enable()
+                        outp = net_connect.send_command('show run')
+                        print(ipJSON[i].strip("\n"), " configuration has been saved")
+                        with open(f"{self.directoryConfig}\\" + ipJSON[i].strip("\n") + '.txt', 'w') as f:
+                            f.write(outp)
+                        print("Disconnecting")
+                        net_connect.disconnect()
+                    print('Devices have been backed up')
+                #Prints error message that is thrown from netmiko 
+                except Exception as e:
+                    print(e)
                 
     #Function for erasing configs 
     def eraseConfig(self):
-        #Error checking if there is no IP file loaded
+         #Error checking if there is no IP file loaded
         if self.filepath_ip == 'None':
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Error")
             dlg.setText("Please load a IP file")
-            button = dlg.exec()
-        #If no error the promts user for login credentials for network devices
+            dlg.exec()
+        #If no error promts user for login credentials for network devices
         else:
+            #Prompts user for network login credentials credentials
             self.username, done1 = QInputDialog.getText(
-                self, 'Input Dialog', 'Enter your username:')
-
+                self, 'Input Dialog', 'Enter Username:')
             self.password, done2 = QInputDialog.getText(
-                self, 'Input Dialog', 'Enter your password:', QLineEdit.Password)
-            
+                self, 'Input Dialog', 'Enter Password:', QLineEdit.Password)
             self.secret, done3 = QInputDialog.getText(
-                self, 'Input Dialog', 'Enter your password:', QLineEdit.Password)
-
-            if self.username == "":
-                dlg = QMessageBox(self)
+                self, 'Input Dialog', 'Enter Secret:', QLineEdit.Password)
+                
+            if self.username == "" or self.password == "" or self.secret == "":
+                dlg = QMessageBox.critical(self)
                 dlg.setWindowTitle("Error")
-                dlg.setText("Please enter a username")
-            if self.password == "":
-                dlg = QMessageBox(self)
-                dlg.setWindowTitle("Error")
-                dlg.setText("Please enter a password")
+                dlg.setText("Please enter all fields")
+                dlg.exec()
+            
             else:
+                #Takes user inputs and sets up netmiko devcie configs
                 device = {
                     'device_type': 'cisco_ios',
                     'host': 'ip',
                     'username': '%s' % self.username,
                     'password': '%s' % self.password,
-                    'secret': 'cisco'
+                    'secret': '%s' % self.secret
                 }
                 #Loading IP file JSON and converting to python dictionary 
                 ipfile = open(self.filepath_ip)
                 ipJSON = json.load(ipfile)
-                #Iterating over the dictionary and grabbing the IPS and then deploying the write erase command
-
-                for i in ipJSON:
-                    device['host'] = ipJSON[i].strip("\n")
-                    print("Connecting to ", ipJSON[i])
-                    net_connect = ConnectHandler(**device)
-                    loop = QEventLoop()
-                    QTimer.singleShot(2000, loop.quit)
-                    net_connect.enable()
-                    outp = net_connect.send_command('show run')
-                    print(ipJSON[i].strip("\n"), " configuration has been saved")
-                    with open(f"{self.directoryConfig}\\" + ipJSON[i].strip("\n") + '.txt', 'w') as f:
-                        f.write(outp)
-                    print("Disconnecting")
-                    net_connect.disconnect()
-                print('Devices have been backed up')
-
+                #Iterating over the dictionary and grabbing the IPS and then deploying the write erase reload command
+                #The output is then saved and written to a .txt file 
+                eraseCommands = ['write erase', 'reload']
+                try:
+                    for i in ipJSON:
+                        device['host'] = ipJSON[i].strip("\n")
+                        print("Connecting to ", ipJSON[i])
+                        net_connect = ConnectHandler(**device)
+                        #The QEvent loop is needed to prevent a hanging SSH call which will crash the GUI
+                        loop = QEventLoop()
+                        QTimer.singleShot(2000, loop.quit)
+                        net_connect.enable()
+                        net_connect.send_config_set(eraseCommands)
+                        print(ipJSON[i].strip("\n"), " Device has been erased")
+                        print("Disconnecting")
+                        net_connect.disconnect()
+                    print('Devices have been backed up')
+                #Prints error message that is thrown from netmiko 
+                except Exception as e:
+                    print(e)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
