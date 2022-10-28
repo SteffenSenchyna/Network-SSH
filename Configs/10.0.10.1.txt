@@ -1,0 +1,95 @@
+Building configuration...
+
+Current configuration : 1012 bytes
+!
+! Last configuration change at 20:19:00 UTC Thu Oct 27 2022
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console virtual
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$gI8H$e8TmUXUG6kB3683wSk5HK0
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+
+
+ip domain name netw3100.local
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+multilink bundle-name authenticated
+!
+!
+license udi pid CSR1000V sn 9JC9E8TDXZB
+!
+username cisco password 0 cisco
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet1
+ ip address 10.0.10.1 255.255.255.0
+ negotiation auto
+!
+interface GigabitEthernet2
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet3
+ no ip address
+ shutdown
+ negotiation auto
+!
+!
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+end
